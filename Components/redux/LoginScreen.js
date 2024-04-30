@@ -16,21 +16,26 @@ export default function LoginScreen({navigation}) {
     }
   };
 
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('https://reqres.in/api/login', {
-        email: userName,
-        password: password,
-      });
-
-      console.log(response.data.token);
-
-      console.warn('Login Successful', 'You are now logged in.');
-      navigation.navigate('TabNavigation');
-    } catch (error) {
-      console.warn('Login Failed', 'Invalid email or password.');
-      navigation.navigate('TabNavigation');
-    }
+  const handleLogin = () => {
+    const apiUrl = 'https://reqres.in/api/login';
+    const request = {
+      email: userName,
+      password: password,
+    };
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    }).then(response => {
+      if (!response.ok) {
+        navigation.navigate('TabNavigation');
+      } else {
+        console.warn('Success', 'Login successful!');
+        navigation.navigate('Tabnavigation');
+      }
+    });
   };
 
   return (
